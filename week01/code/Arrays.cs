@@ -1,19 +1,19 @@
 public static class Arrays
 {
-    /// <summary>
-    /// This function will produce an array of size 'length' starting with 'number' followed by multiples of 'number'.  For 
-    /// example, MultiplesOf(7, 5) will result in: {7, 14, 21, 28, 35}.  Assume that length is a positive
-    /// integer greater than 0.
-    /// </summary>
-    /// <returns>array of doubles that are the multiples of the supplied number</returns>
     public static double[] MultiplesOf(double number, int length)
     {
-        // TODO Problem 1 Start
-        // Remember: Using comments in your program, write down your process for solving this problem
-        // step by step before you write the code. The plan should be clear enough that it could
-        // be implemented by another person.
+        // First, create an array "results" with a size corresponding to the value of param "length"
+        // then run a loop from 1 to length 
+        // add each multiplication of the number by the index to index -1 of the results array (arrays start at index 0)
+        // return results
 
-        return []; // replace this return statement with your own
+        double[] results = new double[length];
+        for (int index = 1; index <= length; index++)
+        {
+            results[index - 1] = number * index;
+        }
+
+        return results;
     }
 
     /// <summary>
@@ -25,9 +25,14 @@ public static class Arrays
     /// </summary>
     public static void RotateListRight(List<int> data, int amount)
     {
-        // TODO Problem 2 Start
-        // Remember: Using comments in your program, write down your process for solving this problem
-        // step by step before you write the code. The plan should be clear enough that it could
-        // be implemented by another person.
+        // Step 1: find the position of the last indexes in the pheasant list list size reduced by amount
+        // Step 2: extract the last values from the list and insert them in a new list
+        // Step 3: delete the last values in the original list
+        // Step 4: add the data extracted in step 2 to the beginning (at index 0) of the original list
+        int position = data.Count - amount;
+        List<int> Last_values = data.GetRange(position, amount);
+        data.RemoveRange(position, amount);
+        data.InsertRange(0, Last_values);
+
     }
 }
