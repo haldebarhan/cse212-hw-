@@ -22,6 +22,8 @@ public class TakingTurnsQueue
     {
         var person = new Person(name, turns);
         _people.Enqueue(person);
+
+        // Defect(s) Found: Change Insert() method to Add() to add element on last index of the list
     }
 
     /// <summary>
@@ -40,7 +42,13 @@ public class TakingTurnsQueue
         else
         {
             Person person = _people.Dequeue();
-            if (person.Turns > 1)
+            if (person.Turns <= 0)
+            {
+                _people.Enqueue(person);
+            }
+            // Defect(s) Found: Add element without modifiying turn
+
+            else if (person.Turns > 1)
             {
                 person.Turns -= 1;
                 _people.Enqueue(person);
