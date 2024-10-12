@@ -15,22 +15,36 @@ using Microsoft.VisualBasic.FileIO;
 
 public class Basketball
 {
+    static Dictionary<string, int> players = [];
     public static void Run()
     {
-        var players = new Dictionary<string, int>();
 
         using var reader = new TextFieldParser("basketball.csv");
         reader.TextFieldType = FieldType.Delimited;
         reader.SetDelimiters(",");
         reader.ReadFields(); // ignore header row
-        while (!reader.EndOfData) {
+        while (!reader.EndOfData)
+        {
             var fields = reader.ReadFields()!;
             var playerId = fields[0];
             var points = int.Parse(fields[8]);
+            AddPlayer(playerId, points);
         }
 
-        Console.WriteLine($"Players: {{{string.Join(", ", players)}}}");
+        TopPTenPlayers(players.ToArray());
+    }
 
-        var topPlayers = new string[10];
+    public static void AddPlayer(string playerId, int points)
+    {
+        players[playerId] = points;
+    }
+
+    public static void TopPTenPlayers(KeyValuePair<string, int>[] topPlayers)
+    {
+        Array.Sort(topPlayers, (a, b) => b.Value - a.Value);
+
+        for(int index = 0; index < 10; index++) {
+            Console.WriteLine($"{topPlayers[index].Key} -- {topPlayers[index].Value}");
+        }
     }
 }
