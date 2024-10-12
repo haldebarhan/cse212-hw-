@@ -24,14 +24,20 @@
 
         // Find the index of the item with the highest priority to remove
         var highPriorityIndex = 0;
-        for (int index = 1; index < _queue.Count - 1; index++)
+
+        // Defect(s) Found: with _queue.Count - 1 the loop does not iterate over the last element of the list
+        for (int index = 1; index < _queue.Count; index++)
         {
-            if (_queue[index].Priority >= _queue[highPriorityIndex].Priority)
+            // Change >= by > to follow the FIFO logic: if two elements have the same priority order, the oldest element is selected
+            if (_queue[index].Priority > _queue[highPriorityIndex].Priority)
                 highPriorityIndex = index;
         }
 
         // Remove and return the item with the highest priority
         var value = _queue[highPriorityIndex].Value;
+
+        // remove at index
+        _queue.RemoveAt(highPriorityIndex);
         return value;
     }
 
