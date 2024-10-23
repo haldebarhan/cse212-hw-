@@ -32,7 +32,18 @@ public class LinkedList : IEnumerable<int>
     /// </summary>
     public void InsertTail(int value)
     {
-        // TODO Problem 1
+        Node newNode = new(value);
+        if (_tail is null)
+        {
+            _head = newNode;
+            _tail = newNode;
+        }
+        else // If the list is not empty, append the new node to the end of the list
+        {
+            _tail.Next = newNode;
+            newNode.Prev = _tail;
+            _tail = newNode;
+        }
     }
 
 
@@ -64,7 +75,22 @@ public class LinkedList : IEnumerable<int>
     /// </summary>
     public void RemoveTail()
     {
-        // TODO Problem 2
+        // If the list is empty, do nothing
+        if (_tail is null)
+            return;
+
+        // If the list has only one node, clear the list
+        if (_head == _tail)
+        {
+            _head = null;
+            _tail = null;
+        }
+        // Otherwise, remove the last node
+        else
+        {
+            _tail = _tail.Prev;
+            _tail!.Next = null; // Disconnect the last node
+        }
     }
 
     /// <summary>
@@ -108,7 +134,42 @@ public class LinkedList : IEnumerable<int>
     /// </summary>
     public void Remove(int value)
     {
-        // TODO Problem 3
+        Node? curr = _head;
+
+        while (curr is not null)
+        {
+            if (curr.Data == value)
+            {
+                // If the node to remove is the only one
+                if (curr == _head && curr == _tail)
+                {
+                    _head = null;
+                    _tail = null;
+                }
+                // If it's the head
+                else if (curr == _head)
+                {
+                    _head = _head.Next;
+                    _head!.Prev = null;
+                }
+                // If it's the tail
+                else if (curr == _tail)
+                {
+                    _tail = _tail.Prev;
+                    _tail!.Next = null;
+                }
+                // If it's in the middle
+                else
+                {
+                    curr.Prev!.Next = curr.Next;
+                    curr.Next!.Prev = curr.Prev;
+                }
+
+                return;
+            }
+
+            curr = curr.Next;
+        }
     }
 
     /// <summary>
@@ -116,7 +177,17 @@ public class LinkedList : IEnumerable<int>
     /// </summary>
     public void Replace(int oldValue, int newValue)
     {
-        // TODO Problem 4
+        Node? curr = _head;
+
+        while (curr is not null)
+        {
+            if (curr.Data == oldValue)
+            {
+                curr.Data = newValue;
+            }
+
+            curr = curr.Next;
+        }
     }
 
     /// <summary>
@@ -146,8 +217,12 @@ public class LinkedList : IEnumerable<int>
     /// </summary>
     public IEnumerable Reverse()
     {
-        // TODO Problem 5
-        yield return 0; // replace this line with the correct yield return statement(s)
+        var curr = _tail; // Start at the tail for backward iteration
+        while (curr is not null)
+        {
+            yield return curr.Data;
+            curr = curr.Prev; // Move backward in the list
+        }
     }
 
     public override string ToString()
@@ -168,8 +243,10 @@ public class LinkedList : IEnumerable<int>
     }
 }
 
-public static class IntArrayExtensionMethods {
-    public static string AsString(this IEnumerable array) {
+public static class IntArrayExtensionMethods
+{
+    public static string AsString(this IEnumerable array)
+    {
         return "<IEnumerable>{" + string.Join(", ", array.Cast<int>()) + "}";
     }
 }
